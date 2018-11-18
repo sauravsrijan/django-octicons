@@ -62,6 +62,14 @@ Or, you can scale the icon with respect to its default dimensions like this:
 ```
 
 
+If you want your own icon, you can register it globally and then use it.
+Register the icon like this:
+```from octicons.templatetags.octicons import Octicon
+Octicon.register(<icon_name>, <path_to_icon>)
+```
+The icon's height and widht must be 24 pixels.
+
+
 All attributes passed will be added as HTML attributes to the SVG element
 of the icon.
 

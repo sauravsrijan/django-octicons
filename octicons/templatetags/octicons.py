@@ -4,6 +4,7 @@ from __future__ import absolute_import
 
 from django import template
 from django.utils.html import format_html
+from xml.dom import minidom
 
 from . import OCTICON_DATA
 
@@ -100,6 +101,26 @@ class Octicon(object):
 
     def _calculate_height(self, width):
         return int((int(width) * self.height) / self.width)
+
+
+    # Register method for a new icon.
+    @classmethod
+    def register(cls, symbol, svg_file):
+        doc = minidom.parse(svg_file)
+        path_strings = [path.getAttribute('d') for path
+                        in doc.getElementsByTagName('path')]
+        path = '<path fill-rule="evenodd" d="'+path_strings[0]+'"'+"/>"
+
+        values = {
+        'name': symbol,
+        'keywords': [symbol],
+        'width': 24,
+        'height': 24,
+        'path': path
+        }
+
+        OCTICON_DATA.update({symbol:values})
+        doc.unlink()
 
 
 @register.simple_tag

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import pytest
+from octicons.templatetags import OCTICON_DATA
 from octicons.templatetags.octicons import Octicon
+import os.path
 
 
 def test_failure_when_octicon_not_exist():
@@ -96,3 +98,11 @@ def test_a11y_include_attributes():
 def test_a11y_has_aria_hidden_when_no_label_passed():
     icon = Octicon('x')
     assert 'aria-hidden="true"' in icon.to_svg
+
+
+# Test for the register method
+def test_register_octicon():
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.join(my_path, "icon/pen.svg")
+    Octicon.register('pen', path)
+    assert OCTICON_DATA.get('pen')
